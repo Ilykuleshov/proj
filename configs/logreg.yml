@@ -1,16 +1,12 @@
-task_type: 
-  name: LOGREG
-  n: 112
-  scale: 2
-
-task:
-  
-
-method:
-  num_iters: 5000
-  alpha: 0.1
-  beta: 0.05
-  tau: 0.01
-
 logging:
-  save_folder: "../logs"
+  save_folder: ../logs/logreg-2
+method:
+  alpha: 0.3
+  beta: 0.1
+  num_iters: 5000
+  tau: 0.01
+task: null
+task_type:
+  n: 112
+  name: LOGREG
+  scale: 2
