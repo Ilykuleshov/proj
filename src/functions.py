@@ -1,6 +1,7 @@
 import numpy as np
 import numpy.linalg as la
 from enum import Enum, auto
+from sklearn.datasets import load_svmlight_file
 
 
 class LossType(Enum):
@@ -13,6 +14,9 @@ class UtilityFunctions:
         self.n = n
 
     def phi(self, x):
+        raise NotImplementedError()
+
+    def get_mu(self):
         raise NotImplementedError()
 
     def noisy_phi(self, x):
@@ -55,3 +59,19 @@ class Quadratic(UtilityFunctions):
 class Logreg(UtilityFunctions):
     def __init__(self, n, scale, task_params):
         super().__init__(n, scale, task_params)
+        data = load_svmlight_file("../datasets/mushrooms.txt")
+        self.X, self.y = data[0].toarray(), data[1]
+        print(self.X.shape)
+
+    def logreg_loss(self, w):
+        assert len(self.y) == self.X.shape[0]
+        assert len(w) == self.X.shape[1]
+        l = np.log(1 + np.exp(-self.X.dot(w) * self.y))
+        m = self.y.shape[0]
+        return np.sum(l) / m
+
+    def phi(self, x):
+        return self.logreg_loss(x)
+
+    def get_mu(self):
+        return 1

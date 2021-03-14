@@ -1,15 +1,15 @@
 task_type: 
-  name: QUADRATIC
+  name: LOGREG
+  n: 112
   scale: 2
 
 task:
-  n: 50
-  kappa: 100
+  
 
 method:
-  num_iters: 100000
-  alpha: 0.3
-  beta: 0.1
+  num_iters: 5000
+  alpha: 0.1
+  beta: 0.05
   tau: 0.01
 
 logging:

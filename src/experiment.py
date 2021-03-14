@@ -17,6 +17,7 @@ except ImportError:
 
 class Experiment:
     def __init__(self,
+                 lossfunc,
                  task_params,
                  n: int,
                  scale: float,
@@ -26,7 +27,6 @@ class Experiment:
                  gamma: float = None,
                  batch_size: float = None,
                  save_folder: str = None,
-                 lossfunc = LossType.QUADRATIC
                  ):
 
         self.alpha = alpha
@@ -39,10 +39,11 @@ class Experiment:
         if SummaryWriter is not None and self.save_folder is not None:
             self.writer = SummaryWriter(save_folder)
 
-        self.loss = {
-            LossType.QUADRATIC: Quadratic(n, scale, task_params),
-            LossType.LOGREG: Logreg(n, scale, task_params)
-        }[lossfunc]
+        if lossfunc == LossType.QUADRATIC:
+            self.loss = Quadratic(n, scale, task_params)
+        elif lossfunc == LossType.LOGREG:
+            self.loss = Logreg(n, scale, task_params)
+
 
         self.mu = self.loss.get_mu()
         self.starting_point = np.ones(n) * 10
