@@ -4,6 +4,7 @@ import yaml
 import argparse
 
 from experiment import Experiment
+from functions import LossType
 
 
 if __name__ == '__main__':
@@ -39,15 +40,16 @@ if __name__ == '__main__':
         yaml.dump(params, f)
 
     experiment = Experiment(
-        n=params["task"]["matrix"]["n"],
-        kappa=params["task"]["matrix"]["kappa"],
-        scale=params["task"]["scale"],
+        lossfunc=LossType[params["task_type"]["name"]],
+        task_params = params["task"],
+        n=params["task_type"]["n"],
+        scale = params["task_type"]["scale"],
         alpha=params["method"]["alpha"],
         beta=params["method"]["beta"],
         tau=tau,
         gamma=gamma,
         batch_size=batch_size,
-        save_folder=save_folder,
+        save_folder=save_folder
     )
 
     print(experiment.__dict__)

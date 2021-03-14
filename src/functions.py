@@ -1,15 +1,19 @@
 import numpy as np
 import numpy.linalg as la
+from enum import Enum, auto
 
+
+class LossType(Enum):
+    QUADRATIC = auto()
+    LOGREG = auto()
 
 class UtilityFunctions:
-    def __init__(self, scale, n, matrix):
+    def __init__(self, n, scale, task_params):
         self.scale = scale
         self.n = n
-        self.matrix = matrix
 
     def phi(self, x):
-        return x.transpose() @ self.matrix @ x
+        raise NotImplementedError()
 
     def noisy_phi(self, x):
         xi = np.random.normal(0, self.scale)
@@ -27,3 +31,27 @@ class UtilityFunctions:
 
         g /= batch_size
         return x_prev - gamma * g
+
+class Quadratic(UtilityFunctions):
+    def __init__(self, n, scale, task_params):
+        super().__init__(n, scale, task_params)
+        self.kappa = task_params["kappa"]
+        self.matrix = self.generate_matrix()
+
+    def generate_matrix(self):
+        des = np.random.uniform(low=1, high=self.kappa, size=self.n)
+        des = 1 + (self.kappa - 1) * (des - min(des)) / (max(des) - min(des))
+        s = np.diag(des)
+        q, _ = la.qr(np.random.rand(self.n, self.n))
+
+        return np.array([q.T @ s @ q]).squeeze()
+
+    def get_mu(self):
+        return min(la.eig(self.matrix)[0])
+
+    def phi(self, x):
+        return x.transpose() @ self.matrix @ x
+
+class Logreg(UtilityFunctions):
+    def __init__(self, n, scale, task_params):
+        super().__init__(n, scale, task_params)

@@ -1,9 +1,11 @@
 
-task:
-  matrix:
-    n: 50
-    kappa: 100
+task_type: 
+  name: QUADRATIC
+  n: 50
   scale: 2
+
+task:
+  kappa: 100
 
 method:
   num_iters: 100000
@@ -12,4 +14,4 @@ method:
   tau: 0.01
 
 logging:
-  save_folder: "/home/alekseev_a/sandbox/opts/checkpoints/exp_15"
+  save_folder: "../logs"

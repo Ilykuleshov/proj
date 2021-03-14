@@ -1,0 +1,13 @@
+logging:
+  save_folder: ../logs
+method:
+  alpha: 0.3
+  beta: 0.1
+  num_iters: 100000
+  tau: 0.01
+task:
+  kappa: 100
+task_type:
+  n: 50
+  name: QUADRATIC
+  scale: 2
